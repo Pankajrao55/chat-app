@@ -12,16 +12,17 @@ export default function Register() {
     email: '',
     password: '',
     profile: null,
+    profileUrl: '' // Stores backend profile image URL
   });
 
-  // ✅ Fix: Function to handle image preview safely
+  // ✅ Fix: Function to handle profile image preview and backend image
   const getProfileImage = () => {
-    try {
-      return user.profile ? URL.createObjectURL(user.profile) : 
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_aZ5dsa-PRx_4ozdsfmRi6kNoZdG18gCv8Em9EtWrHCYJD3OT5sKer3_UfZ4c2uc8lrg&usqp=CAU';
-    } catch (error) {
-      return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_aZ5dsa-PRx_4ozdsfmRi6kNoZdG18gCv8Em9EtWrHCYJD3OT5sKer3_UfZ4c2uc8lrg&usqp=CAU';
-    }
+    if (user.profile instanceof File) {
+      return URL.createObjectURL(user.profile); // Show local preview
+    } 
+    return user.profileUrl 
+      ? `${Baseurl}/uploads/${user.profileUrl}` // Backend image
+      : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_aZ5dsa-PRx_4ozdsfmRi6kNoZdG18gCv8Em9EtWrHCYJD3OT5sKer3_UfZ4c2uc8lrg&usqp=CAU'; // Default image
   };
 
   // ✅ Fix: Handle input changes properly (including file input)
@@ -48,7 +49,7 @@ export default function Register() {
       formData.append('name', user.name);
       formData.append('email', user.email);
       formData.append('password', user.password);
-      formData.append('profile', user.profile);
+      formData.append('profile', user.profile); // Ensures file is appended
 
       const res = await axios.post(`${Baseurl}/api/auth/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
@@ -58,7 +59,7 @@ export default function Register() {
 
       if (res.status === 200) {
         toast.success(data.message);
-        setUser({ name: '', email: '', password: '', profile: null });
+        setUser({ name: '', email: '', password: '', profile: null, profileUrl: data.profileUrl });
         navigate('/login');
       }
 
@@ -154,7 +155,7 @@ export default function Register() {
               </div>
 
               {/* Redirect to Login */}
-              <p className="text-white text-sm mt-8 text-center">
+              <p className="text-gray-500 text-sm mt-8 text-center">
                 Already registered?  
                 <a 
                   href="#" 
