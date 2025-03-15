@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev:frontend": "cd ./Frontend && npm run dev",
-    "dev:backend": "nodemon index.js",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    
+    "dev": "nodemon index.js",
     "postinstall": "cd ./Frontend && npm install && npm run build"
   },
   "author": "",
