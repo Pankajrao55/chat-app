@@ -20,7 +20,9 @@ DbCon();
 
 app.use(express.json());
 app.use(express.static('public'));
-app.use(cors());
+app.use(cors({origin: "*",
+  credentials:true
+}));
 
 app.use('/api/Auth', AuthRoutes);
 app.use('/api/messages', MessageRoutes);
