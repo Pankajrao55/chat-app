@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install",
-    "start": "npm run start",    
+   "start": "node index.js",
     "dev": "nodemon index.js",
     "postinstall": "cd ./Frontend && npm install && npm run build"
   },
