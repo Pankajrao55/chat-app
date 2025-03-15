@@ -24,6 +24,8 @@ app.use(cors({origin: "*",
   credentials:true
 }));
 
+app.use("/uploads", express.static(path.join(path.resolve(),"uploads")));  // new
+
 app.use('/api/Auth', AuthRoutes);
 app.use('/api/messages', MessageRoutes);
 
